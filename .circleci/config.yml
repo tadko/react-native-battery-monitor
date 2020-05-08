@@ -1,0 +1,91 @@
+version: 2.1
+
+# -------------------------
+#        DEFAULTS
+# -------------------------
+defaults: &defaults
+  working_directory: ~/workspace
+  environment:
+    GIT_COMMIT_DESC: git log --format=oneline -n 1 $CIRCLE_SHA1
+    BUNDLE_PATH: vendor/bundle
+
+# -------------------------
+#        EXECUTORS
+# -------------------------
+executors:
+  android:
+    <<: *defaults
+    parameters:
+      java_options:
+        type: string
+        default: '-Xms1048m -Xmx2048m'
+    environment:
+      _JAVA_OPTIONS: <<parameters.java_options>>
+    docker:
+      - image: circleci/android:api-28-node
+
+# -------------------------
+#        COMMANDS
+# -------------------------
+commands:
+  yarn_install_with_cache:
+    description: Runs yarn install. Reads from and saves to a cache.
+    parameters:
+      cache_key:
+        type: string
+        default: v1
+      platform:
+        type: enum
+        enum: ['android', 'ios']
+    steps:
+      - restore_cache:
+          keys:
+            - yarn-packages-<< parameters.platform >>-<< parameters.cache_key >>-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-<< parameters.platform >>-<< parameters.cache_key >>-{{ .Branch }}
+            - yarn-packages-<< parameters.platform >>-<< parameters.cache_key >>
+      - run: yarn install
+      - save_cache:
+          key: yarn-packages-<< parameters.platform >>-<< parameters.cache_key >>-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
+  publish-version:
+    description: Publish npm package.
+    steps:
+      - run:
+          name: Publish New Version
+          command: yarn ci:publish
+
+# -------------------------
+#          JOBS
+# -------------------------
+jobs:
+  build:
+    executor: android
+    steps:
+      - checkout
+      - yarn_install_with_cache:
+          platform: 'android'
+  publish:
+    executor: android
+    steps:
+      - publish-version
+
+# -------------------------
+#        WORK FLOWS
+# -------------------------
+workflows:
+  build-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - master
+      - publish:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master

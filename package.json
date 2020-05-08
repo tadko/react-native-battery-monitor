@@ -1,0 +1,51 @@
+{
+  "name": "react-native-battery-monitor",
+  "version": "0.0.0-development",
+  "description": "Battery Monitor for React Native",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": [
+    "android",
+    "!/android/build",
+    "ios",
+    "src",
+    "*.podspec"
+  ],
+  "keywords": [
+    "react-native",
+    "react",
+    "native",
+    "battery",
+    "monitor"
+  ],
+  "author": {
+    "name": "Tadaaki Onishi",
+    "email": "tadaaki.onishi.jp@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "postversion": "git push && git push --tags",
+    "ci:publish": "npx semantic-release"
+  },
+  "bugs": {
+    "url": "https://github.com/tadko/react-native-battery-monitor/issues"
+  },
+  "homepage": "https://github.com/tadko/react-native-battery-monitor#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tadko/react-native-battery-monitor.git"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.6",
+    "react-native": ">=0.60.0"
+  },
+  "devDependencies": {
+    "@react-native-community/eslint-config": "1.1.0",
+    "@types/react": "16.9.34",
+    "@types/react-native": "0.62.5",
+    "eslint": "6.8.0",
+    "react": "^16.13.1",
+    "react-native": "^0.62.2",
+    "semantic-release": "^17.0.7"
+  }
+}
