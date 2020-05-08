@@ -1,6 +1,6 @@
 {
   "name": "react-native-battery-monitor",
-  "version": "0.0.0-development",
+  "version": "0.0.1",
   "description": "Battery Monitor for React Native",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -44,6 +44,7 @@
     "@types/react": "16.9.34",
     "@types/react-native": "0.62.5",
     "eslint": "6.8.0",
+    "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-native": "^0.62.2",
     "semantic-release": "^17.0.7"
