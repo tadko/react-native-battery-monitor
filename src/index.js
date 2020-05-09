@@ -6,7 +6,11 @@ const batteryEventEmitter = new NativeEventEmitter(RNBatteryMonitor);
 
 class BatteryMonitor {
   onStateChange(listener) {
-    return batteryEventEmitter.addListener(RNBatteryMonitor.BATTERY_CHANGE_EVENT, listener);
+    const subscription = batteryEventEmitter.addListener(
+      RNBatteryMonitor.BATTERY_CHANGE_EVENT,
+      listener,
+    );
+    return () => subscription.remove();
   }
 
   getBatteryState() {

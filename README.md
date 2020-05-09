@@ -40,13 +40,13 @@ yarn add react-native-battery-monitor
 ```jsx
 import BatteryMonitor from 'react-native-battery-monitor';
 
-const subscription = BatteryMonitor.onStateChange((status) => {
+const ubsubscribe = BatteryMonitor.onStateChange((status) => {
   console.log(status.state); //  "unknown" | "unplugged" | "charging" | "full"
   console.log(status.level); // 0.80000001192092
 });
 
 const batteryState = await BatteryMonitor.getBatteryState();
 
-// remove listener
-subscription.remove();
+// unsubscribe
+ubsubscribe();
 ```

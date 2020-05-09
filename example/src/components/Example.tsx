@@ -14,12 +14,10 @@ export const Example: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const subscription = BatteryMonitor.onStateChange((status) => {
+    const unsubscribe = BatteryMonitor.onStateChange((status: BatteryState) => {
       setState(status);
     });
-    return () => {
-      subscription.remove();
-    };
+    return () => unsubscribe();
   }, []);
 
   return (
